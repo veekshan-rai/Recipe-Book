@@ -1,0 +1,45 @@
+.welcome{
+    margin-left: 720px;
+    position: relative;
+    top: -30px;
+    animation: fadeIn 3s ease-in-out, slideIn 2s ease-in-out;
+}
+@keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: translateY(-50px);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+.first{
+    margin-left: 720px;
+    position: relative;
+    top: -130px;
+    animation: bounce 3s infinite ease-in-out;
+    
+
+}
+.second{
+    margin-left: 720px;
+    position: relative;
+    top: -150px;
+    animation: bounce 3s infinite ease-in-out;
+}
+@keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-30px);
+    }
+  }
