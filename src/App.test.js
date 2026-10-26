@@ -1,8 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+test('renders Food Cuisines navbar or home elements', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  const headings = screen.getAllByText(/Food Cuisines/i);
+  expect(headings.length).toBeGreaterThan(0);
 });
+

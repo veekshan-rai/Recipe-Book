@@ -1,55 +1,58 @@
-.img2
-    {
-        display: inline-block;
-        position: relative;
-        overflow: hidden;
+.img2 {
+  display: flex;
+  justifyContent: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding: 16px;
 }
-.img2 img{
-    width: 400px;
-  animation: shake 4s ease-in-out infinite;
-}
-@keyframes shake {
-    0% {
-      transform: translateX(0);
-    }
-    25% {
-      transform: translateX(-10px);
-    }
-    50% {
-      transform: translateX(10px);
-    }
-    75% {
-      transform: translateX(-10px);
-    }
-    100% {
-      transform: translateX(0);
-    }
-  }
-  .img2{
-    position: relative;
-    left: 920px;
-  }
-  .content1{
-    position: relative;
-    right: 700px;
-  }
-  .content2{
-    animation: fadeIn 3s ease-in-out, slideIn 2s ease-in-out;
-  }
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
 
-  @keyframes slideIn {
-    from {
-      transform: translateY(-50px);
-    }
-    to {
-      transform: translateY(0);
-    }
+.img2 img {
+  width: 100%;
+  max-width: 480px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  animation: shake 6s ease-in-out infinite;
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
   }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+}
+
+.content1 {
+  width: 100%;
+  padding: 8px;
+}
+
+.content2 {
+  animation: fadeIn 2s ease-in-out, slideIn 1.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-30px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}

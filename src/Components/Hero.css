@@ -1,45 +1,32 @@
-.welcome{
-    margin-left: 720px;
-    position: relative;
-    top: -30px;
-    animation: fadeIn 3s ease-in-out, slideIn 2s ease-in-out;
+.welcome {
+  animation: fadeIn 2s ease-in-out, slideIn 1.5s ease-in-out;
+  margin: 0;
 }
+
 @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
+  from {
+    opacity: 0;
   }
-
-  @keyframes slideIn {
-    from {
-      transform: translateY(-50px);
-    }
-    to {
-      transform: translateY(0);
-    }
+  to {
+    opacity: 1;
   }
-.first{
-    margin-left: 720px;
-    position: relative;
-    top: -130px;
-    animation: bounce 3s infinite ease-in-out;
-    
-
 }
-.second{
-    margin-left: 720px;
-    position: relative;
-    top: -150px;
-    animation: bounce 3s infinite ease-in-out;
-}
-@keyframes bounce {
-    0%, 100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-30px);
-    }
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-30px);
   }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.first {
+  animation: fadeIn 2.5s ease-in-out;
+  margin: 0;
+}
+
+.second {
+  animation: fadeIn 3s ease-in-out;
+  margin: 0;
+}

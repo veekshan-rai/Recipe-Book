@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, Button, Grid } from "@mui/material";
+import { Box, Typography, Grid } from "@mui/material";
 import pic from "../Assets/Images/img7.jpg";
 const Banner = () => {
   return (
@@ -28,10 +28,9 @@ const Banner = () => {
               variant="h2"
               sx={{
                 textTransform: "uppercase",
-                color: { xs: "white", sm: "#212121" },
+                color: "#1a1a1a",
                 fontWeight: "bold",
                 pb: 3,
-                color:'#00000090'
               }}
             >
               Try Our Classic Dish!

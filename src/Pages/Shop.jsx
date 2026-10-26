@@ -12,27 +12,24 @@ export default function Shop() {
   const [filteredProducts, setFilteredProducts] = useState([]);
 
   useEffect(() => {
-    axios.get('https://dummyjson.com/recipes?limit=300')
+    axios
+      .get("https://dummyjson.com/recipes?limit=300")
       .then((result) => {
-        // setProducts(result.data.products);
-        setProducts(result.data.recipes)
+        setProducts(result.data.recipes || []);
       })
       .catch((error) => {
-        console.log(error);
-      })
-    axios.get('https://dummyjson.com/recipes/tags')
-      .then((result) => {
-        setCategories(result.data);
-        console.log(result.data)
+        console.error(error);
+      });
 
+    axios
+      .get("https://dummyjson.com/recipes/tags")
+      .then((result) => {
+        setCategories(result.data || []);
       })
       .catch((error) => {
-        console.log(error);
-      })
-
-  }, [])
-
-  // console.log(products)
+        console.error(error);
+      });
+  }, []);
 
   useEffect(() => {
     let filtered = [...products];
@@ -40,86 +37,85 @@ export default function Shop() {
     // Filter by category
     if (selectedCategory !== "All") {
       filtered = filtered.filter(
-        (product) => product.categories === selectedCategory
+        (product) =>
+          (Array.isArray(product.tags) && product.tags.includes(selectedCategory)) ||
+          product.cuisine?.toLowerCase() === selectedCategory.toLowerCase()
       );
     }
+
     // Filter by search term
-    if (searchTerm) {
+    if (searchTerm.trim()) {
       filtered = filtered.filter((product) =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase())
+        product.name.toLowerCase().includes(searchTerm.trim().toLowerCase())
       );
     }
-    // Set the filtered products
+
     setFilteredProducts(filtered);
   }, [selectedCategory, searchTerm, products]);
+
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Grid2 container spacing={2}>
-        {/* <Grid2 sx={{ p: 2 }} size={{ xs: 12, sm: 3 }}>
-            <Box>
-              <Typography variant="body2" color="text.secondary">
-                Filter By category
-              </Typography>
-              <Box
-                sx={{
-                  p: 2,
-                  display: "flex",
-                  justifyContent: "flex-start",
-                  gap: 1,
-                  width: "100%",
-                  flexWrap: "wrap",
-                }}
-              >
-              
-                
-                  <Chip
-                  color={selectedCategory === "All" ? "success" : "default"}
-                  label={"All"}
-                  component={Paper}
-                  onClick={()=>setSelectedCategory("All")}
-                />
-                {categories.map((item,index)=>(
-                  <Chip onClick={()=>setSelectedCategory(item)}
-                  component={Paper}
-                  color={selectedCategory== item?'success':'default'}
-                  key={index} label={item}/>
-                ))}
-              </Box>
-            </Box>
-          </Grid2> */}
+    <Box sx={{ flexGrow: 1, p: { xs: 2, md: 4 } }}>
+      {/* Search Input */}
+      <Box sx={{ mb: 3 }}>
+        <TextField
+          onChange={(e) => setSearchTerm(e.target.value)}
+          value={searchTerm}
+          fullWidth
+          type="search"
+          label="Search recipe here"
+          placeholder="Search recipe by name or cuisine..."
+          variant="outlined"
+        />
+      </Box>
 
-        <Grid2 size={{ xs: 12, sm: 12 }} sx={{ p: 2 }}>
-          <Box>
-            <TextField
-              onChange={(e) => setSearchTerm(e.target.value)}
-              value={searchTerm}
-              fullWidth
-              type="search"
-              label="Search product here"
-              placeholder="search product by title"
+      {/* Category Filter Chips */}
+      <Paper elevation={0} sx={{ p: 2, mb: 3, backgroundColor: "#f9f9f9", borderRadius: 2 }}>
+        <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1, fontWeight: "bold" }}>
+          Filter by Category / Tag:
+        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            gap: 1,
+            flexWrap: "wrap",
+            maxHeight: "120px",
+            overflowY: "auto",
+            py: 0.5,
+          }}
+        >
+          <Chip
+            color={selectedCategory === "All" ? "primary" : "default"}
+            label="All"
+            onClick={() => setSelectedCategory("All")}
+            clickable
+          />
+          {categories.map((item, index) => (
+            <Chip
+              key={index}
+              label={item}
+              color={selectedCategory === item ? "primary" : "default"}
+              onClick={() => setSelectedCategory(item)}
+              clickable
             />
-            <Box sx={{ flexGrow: 1, p: 3 }}>
-              <Grid2 container spacing={2}>
-                {filteredProducts.length > 0 ?
-                  filteredProducts.map((item, index) => (
-                    <Grid2 size={{ xs: 12, sm: 4 }}>
-                      <ProductCard product={item} />
-                    </Grid2>
-                  )) : (<Box sx={{ flexGrow: 1, p: 3 }}>
-                    <Grid2 container spacing={2}>
-                      <Grid2 size={{ xs: 12, sm: 12 }}>
-                        <NoData />
-                      </Grid2>
-                    </Grid2>
-                  </Box>)}
+          ))}
+        </Box>
+      </Paper>
 
-
-
+      {/* Recipes Grid */}
+      <Box sx={{ flexGrow: 1 }}>
+        {filteredProducts.length > 0 ? (
+          <Grid2 container spacing={3}>
+            {filteredProducts.map((item) => (
+              <Grid2 key={item.id} size={{ xs: 12, sm: 6, md: 4 }}>
+                <ProductCard product={item} />
               </Grid2>
-            </Box>
-          </Box>
-        </Grid2>
-      </Grid2>
+            ))}
+          </Grid2>
+        ) : (
+          <NoData />
+        )}
+      </Box>
     </Box>
   );
 }
+

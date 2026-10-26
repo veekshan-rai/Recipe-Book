@@ -11,12 +11,13 @@ export default function AboutContent() {
         sx={{ backgroundColor: "gray", borderRadius: "20px" }}
       >
         <Grid2 size={{ xs: 12, sm: 6 }}>
-          <div className="img2"><img
-          className="img1"
-            src={about1}
-            alt="picture"
-            style={{ width: "500px", borderRadius: "20px",position:'relative',right:'110px'}}
-          /></div>
+          <div className="img2">
+            <img
+              className="img1"
+              src={about1}
+              alt="Food Cuisines presentation"
+            />
+          </div>
         </Grid2>
         <Grid2
           size={{ xs: 12, sm: 6 }}
@@ -59,10 +60,9 @@ export default function AboutContent() {
               variant="body1"
               gutterBottom
               sx={{ textAlign: "justify" }}
-          style={{fontWeight:"800", color:"#FFFFFF0",position:'relative',left:'30px'}}
+              style={{ fontWeight: "800", color: "#ffffff", position: "relative", left: "30px" }}
             >
               Join us in this exciting journey of flavors, and let's cook up something delicious together!
-              
             </Typography>
             </div>
           </Box>

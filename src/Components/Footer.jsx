@@ -1,66 +1,93 @@
 import React from "react";
-import { Box, Typography, Grid, Paper } from "@mui/material";
+import { Box, Typography, Paper, Button } from "@mui/material";
 import { Link } from "react-router-dom";
-import logo from "../Assets/Images/img8.jpg"
-import Button from '@mui/material/Button';
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 const Footer = () => {
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
-    
     <Paper
-      elevation={10}
+      elevation={4}
+      component="footer"
       sx={{
-        color: "#353543",
+        backgroundColor: "#1f2937",
+        color: "#ffffff",
         py: 4,
-        px: 2,
-        textAlign: { xs: "center", md: "left" },
+        px: { xs: 2, md: 6 },
+        mt: 6,
       }}
     >
-      <div style={{backgroundImage:`url(${logo})`,height:"100px",backgroundPosition:'center',backgroundSize:'cover',width:'1585px',marginLeft:'-80px'}}>
-      <Grid container spacing={2} justifyContent="center">
-        {/* Website Title and Tagline */}
-        <Grid item xs={12} md={6}>
-          <img style={{ width: "90px", color: "black",borderRadius:'30px' }} src={""} alt="" />
-          <Typography variant="body1" sx={{ mt: 1 }}>
-         
-      <Button variant="contained" disableElevation style={{marginLeft:'770px',position:'relative' ,top:'-20px',display:'flex',backgroundColor:'green',width:'170px'}}>
-      <Box sx={{ mt: 1, display: "flex", flexDirection: "column" }}>
-            <Link
-              to="/"
-              style={{
-                display: "block",
-                mb: 1,
-                
-                fontWeight: "600",
-                fontSize: "18px",
-              }}
-            >
-              Tap to Top
-            </Link>
-            </Box>
-    </Button>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: 2,
+          pb: 3,
+          borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+        }}
+      >
+        <Box sx={{ textAlign: { xs: "center", sm: "left" } }}>
+          <Typography variant="h6" fontWeight="bold" sx={{ color: "#f39c12" }}>
+            Food Cuisines
           </Typography>
-        </Grid>
+          <Typography variant="body2" sx={{ color: "#9ca3af" }}>
+            Discover and celebrate culinary masterpieces from around the world.
+          </Typography>
+        </Box>
 
-        {/* Quick Links */}
-        <Grid
-          item
-          xs={12}
-          md={6}
-          sx={{ textAlign: { xs: "center", md: "right" } }}>
-          
-        </Grid>
-      </Grid>
-      </div>
+        <Box sx={{ display: "flex", gap: 3 }}>
+          <Typography
+            component={Link}
+            to="/"
+            sx={{ color: "#d1d5db", textDecoration: "none", "&:hover": { color: "#ffffff" } }}
+          >
+            Home
+          </Typography>
+          <Typography
+            component={Link}
+            to="/about"
+            sx={{ color: "#d1d5db", textDecoration: "none", "&:hover": { color: "#ffffff" } }}
+          >
+            About
+          </Typography>
+          <Typography
+            component={Link}
+            to="/shop"
+            sx={{ color: "#d1d5db", textDecoration: "none", "&:hover": { color: "#ffffff" } }}
+          >
+            Recipes
+          </Typography>
+        </Box>
+
+        <Button
+          variant="contained"
+          onClick={scrollToTop}
+          startIcon={<KeyboardArrowUpIcon />}
+          sx={{
+            backgroundColor: "#2e7d32",
+            borderRadius: "20px",
+            px: 2.5,
+            "&:hover": { backgroundColor: "#1b5e20" },
+          }}
+        >
+          Top
+        </Button>
+      </Box>
 
       <Typography
         variant="body2"
-        sx={{ mt: 4, textAlign: "center", color: "#aaa" }}
+        sx={{ mt: 3, textAlign: "center", color: "#9ca3af", fontSize: "0.85rem" }}
       >
-        &copy; {new Date().getFullYear()} title. All Rights Reserved.
+        &copy; {new Date().getFullYear()} Food Cuisines. All Rights Reserved.
       </Typography>
     </Paper>
   );
 };
 
 export default Footer;
+

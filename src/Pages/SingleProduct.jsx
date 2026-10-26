@@ -8,186 +8,235 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TableRow,
   Typography,
 } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import StarRateIcon from "@mui/icons-material/StarRate";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+
 export default function SingleProduct() {
-  let url = useParams()
   const { id } = useParams();
-  const [productInfo, setProductInfo] = useState();
-  const [subImage, setSubImage] = useState(0);
+  const [productInfo, setProductInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    axios.get('https://dummyjson.com/recipes/' + id)
+    setLoading(true);
+    axios
+      .get("https://dummyjson.com/recipes/" + id)
       .then((result) => {
         setProductInfo(result.data);
-        console.log("data", result.data)
+        setLoading(false);
       })
       .catch((error) => {
-        console.log(error);
-      })
+        console.error(error);
+        setLoading(false);
+      });
+  }, [id]);
 
-  }, [])
-  console.log(id);
+  if (loading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "60vh" }}>
+        <Typography variant="h6">Loading recipe details...</Typography>
+      </Box>
+    );
+  }
 
-  //   console.log(productInfo);
+  if (!productInfo) {
+    return (
+      <Box sx={{ textAlign: "center", p: 4, minHeight: "60vh" }}>
+        <Typography variant="h5" color="error" gutterBottom>
+          Recipe not found
+        </Typography>
+        <Typography component={Link} to="/shop" sx={{ color: "primary.main", textDecoration: "underline" }}>
+          Back to Recipes
+        </Typography>
+      </Box>
+    );
+  }
+
   return (
-    <Box sx={{ flexGrow: 1, p: 2 }}>
-      <Box sx={{ p: 1 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={2}>
-            <Paper
-              elevation={0}
-              sx={{
-                height: "104vh",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: 1,
-              }}
-            >
+    <Box sx={{ flexGrow: 1, p: { xs: 2, md: 4 }, maxWidth: "1280px", margin: "0 auto" }}>
+      <Box sx={{ mb: 2 }}>
+        <Typography
+          component={Link}
+          to="/shop"
+          sx={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 0.5,
+            color: "text.secondary",
+            textDecoration: "none",
+            fontWeight: "bold",
+            "&:hover": { color: "primary.main" },
+          }}
+        >
+          <ArrowBackIcon fontSize="small" /> Back to Recipes
+        </Typography>
+      </Box>
 
-            </Paper>
-          </Grid>
+      <Paper elevation={2} sx={{ p: { xs: 2, md: 4 }, borderRadius: 3 }}>
+        <Grid container spacing={4}>
+          {/* Image Section */}
           <Grid item xs={12} md={5}>
-            <Paper
-              elevation={0}
+            <Box
               sx={{
-                height: "100vh",
-                display: "flex",
-                justifyContent: "center",
-                p: 2,
+                width: "100%",
+                height: { xs: "300px", sm: "400px", md: "460px" },
+                borderRadius: 2,
+                overflow: "hidden",
+                boxShadow: 2,
               }}
             >
               <img
                 src={productInfo?.image}
+                alt={productInfo?.name || "Recipe"}
                 style={{
                   width: "100%",
-                  maxHeight: "100%",
-                  objectFit: "contain",
+                  height: "100%",
+                  objectFit: "cover",
                 }}
-                alt="Selected"
               />
-            </Paper>
+            </Box>
           </Grid>
-          <Grid item xs={12} md={5}>
-            <Paper elevation={0} sx={{ height: "100vh", padding: 2 }}>
-              <Box>
-                <Typography
-                  variant="button"
-                  color="text.secondary"
-                  sx={{ fontSize: "14px", fontWeight: "bolder" }}
-                >
-                  {productInfo?.brand}
-                </Typography>
-              </Box>
-              <Box>
-                <Typography
-                  variant="button"
-                  color="text.secondary"
-                  sx={{ fontSize: "24px", fontWeight: "bolder" }}
-                >
-                  {productInfo?.name}
-                </Typography>
-              </Box>
-              <Box
-                sx={{ display: "flex", justifyContent: "flex-start", gap: 2 }}
-              >
+
+          {/* Details Section */}
+          <Grid item xs={12} md={7}>
+            <Box>
+              {productInfo?.cuisine && (
+                <Chip
+                  label={productInfo.cuisine}
+                  color="primary"
+                  size="small"
+                  sx={{ mb: 1, fontWeight: "bold" }}
+                />
+              )}
+
+              <Typography variant="h4" component="h1" fontWeight="bold" gutterBottom>
+                {productInfo?.name}
+              </Typography>
+
+              <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
                 <Chip
                   size="small"
-                  label={productInfo?.rating}
+                  label={productInfo?.rating || "N/A"}
                   color={
                     productInfo?.rating > 4.5
                       ? "success"
                       : productInfo?.rating > 4
-                        ? "warning"
-                        : "error"
+                      ? "warning"
+                      : "default"
                   }
                   icon={<StarRateIcon sx={{ fontSize: "16px" }} />}
-                  sx={{ borderRadius: "10px" }}
                 />
-                <Typography variant="body" color="text.secondary">
-                  {productInfo?.ratings}
-                </Typography>
+                {productInfo?.reviewCount && (
+                  <Typography variant="body2" color="text.secondary">
+                    ({productInfo.reviewCount} reviews)
+                  </Typography>
+                )}
               </Box>
-              <Box
-                sx={{ display: "flex", justifyContent: "flex-start", gap: 2 }}
-              >
-                <Typography
-                  variant="h6"
-                  mt={1}
-                  fontWeight={"bolder"}
-                  color="green"
-                >
-                  {productInfo?.prepTimeMinutes} Min
-                </Typography>
-              </Box>
-              <Box
-                sx={{ display: "flex", justifyContent: "flex-start", gap: 2 }}
-              >
-                <Typography variant="h4" mt={1} color="text.secondary">
 
-                </Typography>
-                <Typography variant="h6" mt={1} color="text.secondary">
-                  {productInfo?.difficulty}
-                </Typography>
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mb: 2 }}>
+                {productInfo?.prepTimeMinutes && (
+                  <Chip
+                    label={`Prep: ${productInfo.prepTimeMinutes} mins`}
+                    variant="outlined"
+                    color="secondary"
+                  />
+                )}
+                {productInfo?.cookTimeMinutes && (
+                  <Chip
+                    label={`Cook: ${productInfo.cookTimeMinutes} mins`}
+                    variant="outlined"
+                    color="info"
+                  />
+                )}
+                {productInfo?.difficulty && (
+                  <Chip
+                    label={`Difficulty: ${productInfo.difficulty}`}
+                    variant="outlined"
+                  />
+                )}
+                {productInfo?.servings && (
+                  <Chip
+                    label={`Servings: ${productInfo.servings}`}
+                    variant="outlined"
+                  />
+                )}
+                {productInfo?.caloriesPerServing && (
+                  <Chip
+                    label={`${productInfo.caloriesPerServing} kcal / serving`}
+                    variant="outlined"
+                    color="success"
+                  />
+                )}
               </Box>
-              <Box
-                sx={{ display: "flex", justifyContent: "flex-start", gap: 2 }}
-              >
-                <Typography variant="caption" mb={1} color="text.secondary">
-                  {productInfo?.shippingInformation}
-                </Typography>
-              </Box>
-              <Divider />
-              <TableContainer>
+
+              <Divider sx={{ my: 2 }} />
+
+              <TableContainer component={Paper} variant="outlined" sx={{ borderRadius: 2 }}>
                 <Table>
-                  <TableHead>
+                  <TableBody>
                     <TableRow>
-                      <TableCell>Ingredients</TableCell>
+                      <TableCell sx={{ fontWeight: "bold", width: "130px", verticalAlign: "top" }}>
+                        Ingredients
+                      </TableCell>
                       <TableCell>
-                        <Typography variant="caption" color="text.secondary">
-                          {productInfo?.ingredients}
-                        </Typography>
+                        <Box component="ul" sx={{ pl: 2, m: 0 }}>
+                          {Array.isArray(productInfo?.ingredients) ? (
+                            productInfo.ingredients.map((item, idx) => (
+                              <Typography component="li" variant="body2" key={idx} sx={{ mb: 0.5 }}>
+                                {item}
+                              </Typography>
+                            ))
+                          ) : (
+                            <Typography variant="body2">{productInfo?.ingredients}</Typography>
+                          )}
+                        </Box>
                       </TableCell>
                     </TableRow>
+
                     <TableRow>
-                      <TableCell>Tags</TableCell>
+                      <TableCell sx={{ fontWeight: "bold", verticalAlign: "top" }}>
+                        Instructions
+                      </TableCell>
                       <TableCell>
-                        <Typography variant="caption" color="text.secondary">
-                          {productInfo?.tags}
-                        </Typography>
+                        <Box component="ol" sx={{ pl: 2, m: 0 }}>
+                          {Array.isArray(productInfo?.instructions) ? (
+                            productInfo.instructions.map((step, idx) => (
+                              <Typography component="li" variant="body2" key={idx} sx={{ mb: 1 }}>
+                                {step}
+                              </Typography>
+                            ))
+                          ) : (
+                            <Typography variant="body2">{productInfo?.instructions}</Typography>
+                          )}
+                        </Box>
                       </TableCell>
                     </TableRow>
-                    <TableRow>
-                      <TableCell>Instr</TableCell>
-                      <TableCell>
-                        <Typography variant="caption" color="text.secondary">
-                          {productInfo?.instructions}
-                        </Typography>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Status</TableCell>
-                      <TableCell>
-                        <Typography variant="caption" color="text.secondary">
-                          {productInfo?.caloriesPerServing}
-                        </Typography>
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody></TableBody>
+
+                    {productInfo?.tags && productInfo.tags.length > 0 && (
+                      <TableRow>
+                        <TableCell sx={{ fontWeight: "bold" }}>Tags</TableCell>
+                        <TableCell>
+                          <Box sx={{ display: "flex", gap: 0.5, flexWrap: "wrap" }}>
+                            {productInfo.tags.map((tag, idx) => (
+                              <Chip key={idx} label={tag} size="small" variant="outlined" />
+                            ))}
+                          </Box>
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
                 </Table>
               </TableContainer>
-            </Paper>
+            </Box>
           </Grid>
         </Grid>
-      </Box>
+      </Paper>
     </Box>
   );
 }
+

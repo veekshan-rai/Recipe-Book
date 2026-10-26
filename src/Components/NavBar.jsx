@@ -7,16 +7,11 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-//import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
 import { Link } from "react-router-dom";
 import logo from "../Assets/Images/food.jpg";
-
-import ButtonGroup from '@mui/material/ButtonGroup';
 import Button from '@mui/material/Button';
+
 const pages = [
   { title: "Home", path: "/" },
   { title: "About", path: "/about" },
@@ -25,21 +20,13 @@ const pages = [
 
 function NavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
   };
 
   return (
@@ -52,18 +39,18 @@ function NavBar() {
 
       <Container maxWidth="xl" >
         <Toolbar disableGutters>
-          <Box sx={{ display: { xs: "none", md: "flex" }, mr: 1}}>
+          <Box sx={{ display: { xs: "none", md: "flex" }, mr: 2, alignItems: "center" }}>
             <img
-              style={{ width: "50px", color: "black" ,borderRadius:'50px',height:'50px',marginLeft:'-10pxpx'}}
+              style={{ width: "45px", height: "45px", borderRadius: "50%", objectFit: "cover" }}
               src={logo}
-              alt="recipe"
+              alt="Food Cuisines logo"
             />
           </Box>
-          <Box sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}>
+          <Box sx={{ display: { xs: "flex", md: "none" }, mr: 1, alignItems: "center" }}>
             <img
-              style={{ width: "200px", color: "black" }}
-              src={"logo.png"}
-              alt="logo"
+              style={{ width: "40px", height: "40px", borderRadius: "50%", objectFit: "cover" }}
+              src={logo}
+              alt="Food Cuisines logo"
             />
           </Box>
           <Box
@@ -123,19 +110,26 @@ function NavBar() {
             }}
           >
             {pages.map((page, index) => (
-              <ButtonGroup
-              disableElevation
-              variant="contained"
-              aria-label="Disabled button group"
-              component={Link}
-                to={page.path}
+              <Button
                 key={index}
+                component={Link}
+                to={page.path}
                 onClick={handleCloseNavMenu}
-                style={{marginRight:'40px'}}>
-              <Button style={{backgroundColor:'#000000b8',fontFamily:'itelic',color:'white'}}>{page.title}</Button>
-          </ButtonGroup>
-              
-             
+                sx={{
+                  backgroundColor: '#000000b8',
+                  color: 'white',
+                  fontStyle: 'italic',
+                  fontWeight: 600,
+                  mr: 2,
+                  px: 2.5,
+                  borderRadius: '20px',
+                  '&:hover': {
+                    backgroundColor: '#000000',
+                  },
+                }}
+              >
+                {page.title}
+              </Button>
             ))}
           </Box>
         </Toolbar>
